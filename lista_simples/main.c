@@ -20,7 +20,7 @@ int tamanhoLista(struct no **ptrCabeca);
 
 int main() {
     int continuar = 1, escolharUser;
-    struct no *cabeca = NULL, **ptrCabeca = &cabeca;
+    struct no *cabeca = NULL;
 
     while (continuar == 1) {
 
