@@ -18,6 +18,8 @@ void exibirFila(struct no **ptrCabeca);
 
 int tamanhoLista(struct no **ptrCabeca);
 
+void imprimirArquivo(struct no **ptrCabeca);
+
 int main() {
     int continuar = 1, escolharUser;
     struct no *cabeca = NULL;
@@ -62,7 +64,7 @@ int main() {
             break;
 
         case 6:
-
+            imprimirArquivo(&cabeca);
             break;
 
         case 0:
@@ -229,3 +231,23 @@ int tamanhoLista(struct no **ptrCabeca) {
     return i;
 } 
 
+void imprimirArquivo(struct no **ptrCabeca) {
+    // guarda a cabeça
+    struct no *atual = *ptrCabeca;
+
+    // verifica se dá para imprimir
+    if (tamanhoLista(ptrCabeca) == 0) {
+        printf("Não tem arquivo para imprimir\n");
+        return;
+    }
+
+    // imprime a cabeça
+    printf("%s\n", (*ptrCabeca)->arquivo);
+
+    // cabeça passa a apontar para o próximo
+    *ptrCabeca = atual->prox;
+
+    // libera o arquivo impresso
+    free(atual);
+    atual = NULL;
+}
