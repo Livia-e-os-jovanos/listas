@@ -31,7 +31,6 @@ int main() {
         printf("[5] Exibir o Próximo Arquivo a ser Impresso;\n");
         printf("[6] Imprimir arquivo;\n"); // vai imprimir um, assim os outros irão para frente após isso e esse será excluído
         printf("[0] Sair;\n");
-        //limpar fila?
         
         scanf("%d", &escolharUser);
         switch (escolharUser) {
@@ -44,9 +43,25 @@ int main() {
             break;
 
         case 3:
+            
+            break;
+
+        case 4: 
             printf("O tamanho da lista é: %d\n", tamanhoLista(&cabeca));
             break;
 
+        case 5:
+
+            break;
+
+        case 6:
+
+            break;
+
+        case 0:
+            continuar = 0;
+            break;
+            
         default:
             printf("Opção Inexistente\n");
             break;
