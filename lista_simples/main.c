@@ -53,7 +53,12 @@ int main() {
             break;
 
         case 5:
-
+            if (cabeca == NULL) {
+                printf("Não existem arquivos na fila\n");
+            } else {
+                printf("O próximo arquivo a ser impresso é: %s\n", cabeca->arquivo);
+            }
+            
             break;
 
         case 6:
