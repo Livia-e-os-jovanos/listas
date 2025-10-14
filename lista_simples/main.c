@@ -12,6 +12,8 @@ struct no {
 
 void inserirArquivo(struct no *ptrCabeca);
 
+int tamanhoLista(struct no *ptrCabeca);
+
 int main() {
     int continuar = 1, escolharUser;
     struct no *cabeca = NULL;
@@ -34,7 +36,6 @@ int main() {
         case 1:
             inserirArquivo(cabeca);
             break;
-        
         default:
             printf("Opção Inexistente\n");
             break;
@@ -69,9 +70,20 @@ void inserirArquivo(struct no *ptrCabeca) {
         // salva os dado do novo arquivo
         printf("Qual o nome do arquivo (+ extensão)? \n");
         fgets(novoArquivo->arquivo, sizeof(novoArquivo->arquivo), stdin);
+        // remove o 'enter' que acaba sendo salvo no final
         novoArquivo->arquivo[strcspn(novoArquivo->arquivo, "\n")] = '\0';
         printf("%s adicionado com sucesso\n", novoArquivo->arquivo);
 
         novoArquivo->prox = NULL;
     }
 }
+
+int tamanhoLista(struct no *ptrCabeca) {
+    int i = 0;
+    while (ptrCabeca != NULL) {
+        i++;
+        ptrCabeca = ptrCabeca->prox;
+    }
+    return i;
+} 
+
