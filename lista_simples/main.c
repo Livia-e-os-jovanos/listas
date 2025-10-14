@@ -14,6 +14,8 @@ void inserirArquivo(struct no **ptrCabeca);
 
 void removerArquivo(struct no **ptrCabeca);
 
+void exibirFila(struct no **ptrCabeca);
+
 int tamanhoLista(struct no **ptrCabeca);
 
 int main() {
@@ -43,7 +45,7 @@ int main() {
             break;
 
         case 3:
-            
+            exibirFila(&cabeca);
             break;
 
         case 4: 
@@ -61,7 +63,7 @@ int main() {
         case 0:
             continuar = 0;
             break;
-            
+
         default:
             printf("Opção Inexistente\n");
             break;
@@ -195,6 +197,20 @@ void removerArquivo(struct no **ptrCabeca) {
     default:
         printf("Opção Inexistente\n");
     }
+}
+
+void exibirFila(struct no **ptrCabeca) {
+    // define um ponteiro "iterador" que começa pela cabeça
+    struct no *ptrI;
+    ptrI = (*ptrCabeca);
+
+    // enquanto o endereço dele não for NULL
+    while(ptrI != NULL){
+        // printa o arquivo e passa para o próximo
+        printf("%s ", ptrI->arquivo);
+        ptrI = ptrI->prox;
+    }
+    printf("\n");
 }
 
 int tamanhoLista(struct no **ptrCabeca) {
