@@ -34,7 +34,7 @@ Elaborar uma explicação técnica sobre cada tipo de lista, incluindo:
 
 Implementar quatro exemplos práticos distintos, um para cada tipo de lista:
 
-- Lista Simplesmente Encadeada: (falar o que fez)  
+- Lista Simplesmente Encadeada: fila de arquivos para impressão seguindo o principio FIFO (First In, First Out)  
 - Lista Duplamente Encadeada: (falar o que fez)
 - Lista Circular Simples: (falar o que fez)  
 - Lista Duplamente Circular: (falar o que fez)  
