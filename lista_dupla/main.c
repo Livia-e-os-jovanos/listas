@@ -11,11 +11,11 @@ struct pagina {
     struct pagina *ant;
 };
 
-void inserirURL(struct pagina *ptr);
+void inserirUrl(struct pagina **cabeca, struct pagina **final, struct pagina **atual);
 
 void main() {
     int continuar = 1, escolharUser;
-    struct pagina *cabeca, *atual;
+    struct pagina *cabeca = NULL, *atual = NULL, *final = NULL;
 
     while (continuar == 1) {
 
@@ -32,7 +32,7 @@ void main() {
 
         switch (escolharUser) {
         case 1:
-            inserirURL(cabeca);
+            inserirUrl(&cabeca, &final, &atual);
             break;
         case 0:
             continuar = 0;
@@ -41,6 +41,36 @@ void main() {
     }
 }
 
-void inserirURL(struct pagina *ptr) {
-    
+void inserirUrl(struct pagina **cabeca, struct pagina **final, struct pagina **atual) {
+    struct pagina *NovaUrl = malloc(sizeof *NovaUrl);
+
+    printf("Digite a URL que quer acessar:\n");
+
+    // cancela resíduos que podem ter ficado na entrada
+    getchar();
+
+    // lê a URL
+    fgets(NovaUrl->url, sizeof(NovaUrl->url), stdin);
+
+    // remove o caracter que simboliza o 'enter' ao final da string
+    NovaUrl->url[strcspn(NovaUrl->url, "\n")] = '\0';
+
+    if (*cabeca == NULL) {
+        *cabeca = NovaUrl;
+        *atual = NovaUrl;
+        *final = NovaUrl;
+
+        // por ser a cabeça ele aponta NULL para os outros lados
+        NovaUrl->ant = NULL;
+        NovaUrl->prox = NULL;
+
+    } else {
+        // só é possível adicionar no final
+        struct pagina *temp = *final;
+        
+        NovaUrl->ant = temp; 
+        (*final)->prox = NovaUrl;
+        *final = NovaUrl;
+        NovaUrl->prox = NULL;
+    }
 }
