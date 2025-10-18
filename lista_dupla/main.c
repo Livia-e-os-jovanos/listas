@@ -13,6 +13,8 @@ struct pagina {
 
 void inserirUrl(struct pagina **cabeca, struct pagina **final, struct pagina **atual);
 
+int tamanhoLista(struct pagina **cabeca);
+
 void main() {
     int continuar = 1, escolharUser;
     struct pagina *cabeca = NULL, *atual = NULL, *final = NULL;
@@ -23,7 +25,7 @@ void main() {
         printf("Escolha:\n");
         printf("[1] Inserir URL;\n");
         printf("[2] Remover URL;\n"); // por indice ou por nome
-        printf("[3] Exibir os URLs;\n");
+        printf("[3] Exibir o Histórico;\n");
         printf("[4] Exibir o Tamanho do Histórico;\n");
         printf("[5] Avançar;\n");
         printf("[6] Voltar;\n"); 
@@ -34,6 +36,11 @@ void main() {
         case 1:
             inserirUrl(&cabeca, &final, &atual);
             break;
+        
+        case 4:
+            printf("O tamanho do histórico é: %d\n", tamanhoLista(&cabeca));
+            break; 
+
         case 0:
             continuar = 0;
             break;
@@ -73,4 +80,14 @@ void inserirUrl(struct pagina **cabeca, struct pagina **final, struct pagina **a
         *final = NovaUrl;
         NovaUrl->prox = NULL;
     }
+}
+
+int tamanhoLista(struct pagina **cabeca) {
+    struct pagina *ptrI = *cabeca;
+    int i = 0;
+    while (ptrI != NULL) {
+        i++;
+        ptrI = ptrI->prox;
+    }
+    return i;
 }
