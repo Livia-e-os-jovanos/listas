@@ -19,6 +19,8 @@ void exibirHistorico(struct pagina **cabeca);
 
 int tamanhoLista(struct pagina **cabeca);
 
+void navegar(struct pagina **atual, struct pagina **cabeca, struct pagina **final);
+
 int main() {
     int continuar = 1, escolharUser;
     struct pagina *cabeca = NULL, *atual = NULL, *final = NULL;
@@ -31,8 +33,7 @@ int main() {
         printf("[2] Remover URL;\n");
         printf("[3] Exibir o Histórico;\n");
         printf("[4] Exibir o Tamanho do Histórico;\n");
-        printf("[5] Avançar;\n");
-        printf("[6] Voltar;\n"); 
+        printf("[5] Navegar;\n"); 
         printf("[0] Sair;\n");
         scanf("%d", &escolharUser);
 
@@ -56,13 +57,7 @@ int main() {
             break; 
 
         case 5:
-            printf("Endereço da Cabeça: %p\n", cabeca);
-            printf("Endereço da Atual: %p\n", atual);
-            printf("Endereço do Final: %p\n", final);
-
-            printf("URL da Cabeça: %s\n", cabeca->url);
-            printf("URL da Atual: %s\n", atual->url);
-            printf("URL do Final: %s\n", final->url);
+            navegar(&atual, &cabeca, &final);
             break;
 
         case 0:
@@ -196,4 +191,52 @@ int tamanhoLista(struct pagina **cabeca) {
         ptrI = ptrI->prox;
     }
     return i;
+}
+
+void navegar(struct pagina **atual, struct pagina **cabeca, struct pagina **final) {
+    // verifica se o atual é válido
+    if (atual == NULL) {
+        return;
+    }
+
+    int continuar = 1, opcaoUser;
+
+    while (continuar == 1) {
+        // limpa o terminal
+        system("clear");
+        printf("Você está em: %s\n", (*atual)->url);
+        printf("\n");
+        // opções para o usuário
+        printf("Escolha: \n [1] Próximo;\n [2] Voltar;\n [0] Sair da Navegação;\n");
+
+        scanf("%d", &opcaoUser);
+
+        switch (opcaoUser) {
+            case 1:
+                // se o usuário estiver no limite ele mostrará
+                if (*atual == *final) {
+                    printf("você chegou ao limite\n");
+                    getchar(); // limpa o caractere do \n que sobrou ao digitar
+                    getchar(); // só continua quando o usuário apertar 'enter'
+                } else {
+                    *atual = (*atual)->prox;
+                }
+                break;
+
+            case 2:
+                // se o usuário estiver no limite ele mostrará
+                if (atual == cabeca) {
+                    printf("você chegou ao limite\n");
+                    getchar(); // limpa o caractere do \n que sobrou ao digitar
+                    getchar(); // só continua quando o usuário apertar 'enter'
+                } else {
+                    *atual = (*atual)->ant;
+                }
+                break;
+            case 0:
+                continuar = 0;
+                break;
+        }
+    }
+
 }
