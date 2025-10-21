@@ -89,11 +89,16 @@ void inserirUrl(struct pagina **cabeca, struct pagina **final, struct pagina **a
 
     } else {
         // só é possível adicionar no final
-        // faz o final caminhar para o próximo
-        
+        // faz o final caminhar para o próximo e conecta os ponteiros
+
+        // o novo nó vai apontar para o anterior
+        NovaUrl->ant = *final;
+        // o antigo final aponta para o próximo
         (*final)->prox = NovaUrl;
+        // novo final aponta para NULL
+        NovaUrl->prox = NULL;
+        // o novo nó agora é o final 
         *final = NovaUrl;
-        (*final)->prox = NULL;
     }
 }
 
@@ -225,7 +230,7 @@ void navegar(struct pagina **atual, struct pagina **cabeca, struct pagina **fina
 
             case 2:
                 // se o usuário estiver no limite ele mostrará
-                if (atual == cabeca) {
+                if (*atual == *cabeca) {
                     printf("você chegou ao limite\n");
                     getchar(); // limpa o caractere do \n que sobrou ao digitar
                     getchar(); // só continua quando o usuário apertar 'enter'
