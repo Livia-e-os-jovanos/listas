@@ -13,7 +13,9 @@ struct pagina {
 
 void inserirUrl(struct pagina **cabeca, struct pagina **final, struct pagina **atual);
 
-void removerUrl(struct pagina **cabeca);
+void removerUrl(struct pagina **cabeca, struct pagina **final, struct pagina **atual);
+
+void exibirHistorico(struct pagina **cabeca);
 
 int tamanhoLista(struct pagina **cabeca);
 
@@ -42,12 +44,26 @@ int main() {
             break;
         
         case 2:
-            removerUrl(&cabeca);
+            removerUrl(&cabeca, &final, &atual);
             break;
-        
+
+        case 3:
+            exibirHistorico(&cabeca);
+            break;
+            
         case 4:
             printf("O tamanho do histórico é: %d\n", tamanhoLista(&cabeca));
             break; 
+
+        case 5:
+            printf("Endereço da Cabeça: %p\n", cabeca);
+            printf("Endereço da Atual: %p\n", atual);
+            printf("Endereço do Final: %p\n", final);
+
+            printf("URL da Cabeça: %s\n", cabeca->url);
+            printf("URL da Atual: %s\n", atual->url);
+            printf("URL do Final: %s\n", final->url);
+            break;
 
         case 0:
             continuar = 0;
@@ -78,24 +94,22 @@ void inserirUrl(struct pagina **cabeca, struct pagina **final, struct pagina **a
 
     } else {
         // só é possível adicionar no final
-        struct pagina *temp = *final;
+        // faz o final caminhar para o próximo
         
-        NovaUrl->ant = temp; 
         (*final)->prox = NovaUrl;
         *final = NovaUrl;
-        NovaUrl->prox = NULL;
+        (*final)->prox = NULL;
     }
 }
 
-void removerUrl(struct pagina **cabeca) {
+void removerUrl(struct pagina **cabeca, struct pagina **final, struct pagina **atual) {
     char urlRemovida[20];
     struct pagina *ptrI = *cabeca;
 
-    printf("Qual a URL que você gostaria de Apagar?\n");
+    printf("Qual a URL que você gostaria de apagar?\n");
 
     fgets(urlRemovida, sizeof(urlRemovida), stdin);
     urlRemovida[strcspn(urlRemovida, "\n")] = '\0';
-    printf("%s", urlRemovida);
     
     while (ptrI != NULL) {
         // verifica se é a cabeça que tem que ser removida
@@ -106,8 +120,18 @@ void removerUrl(struct pagina **cabeca) {
             // a cabeça aponta para a nova cabeça
             *cabeca = ptrI->prox;
             // se a cabeça tiver algum valor
-            if (cabeca != NULL) {
+            if (*cabeca != NULL) {
                 (*cabeca)->ant = NULL;
+            }
+
+            // se a atual for a que vai ser removida, ele aponta para a cabeça
+            if (*atual == ptrI) {
+                *atual = *cabeca;
+            }
+
+            // se a final também for removida, ele aponta para a cabeça
+            if (*final == ptrI) {
+                *final = *cabeca;
             }
 
             // libera
@@ -122,6 +146,16 @@ void removerUrl(struct pagina **cabeca) {
         if (ptrI->prox != NULL && strcmp(ptrI->prox->url, urlRemovida) == 0  ) {
             // pega o anterior e o próximo para conecta-los
             struct pagina *anterior = ptrI, *proximo = ptrI->prox->prox;
+
+            // se a atual for a que vai ser removida
+            if (*atual == ptrI->prox) {
+                *atual = anterior;
+            }
+
+            // se o final for a que vai ser removida
+            if (*final == ptrI->prox) {
+                *final = anterior;
+            } 
 
             // o antecessor vai começar a apontar para o novo próximo
             anterior->prox = proximo;
@@ -141,6 +175,17 @@ void removerUrl(struct pagina **cabeca) {
     }
 
     printf("Não encontrado \n");
+}
+
+void exibirHistorico(struct pagina **cabeca) {
+    // é um ponteiro iterador para percorrer o histórico
+    struct pagina *ptrI = *cabeca;
+
+    while (ptrI != NULL) {
+        printf("%s ", ptrI->url);
+        ptrI = ptrI->prox;
+    }
+    printf("\n");
 }
 
 int tamanhoLista(struct pagina **cabeca) {
