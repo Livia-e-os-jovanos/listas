@@ -13,9 +13,11 @@ struct pagina {
 
 void inserirUrl(struct pagina **cabeca, struct pagina **final, struct pagina **atual);
 
+void removerUrl(struct pagina **cabeca);
+
 int tamanhoLista(struct pagina **cabeca);
 
-void main() {
+int main() {
     int continuar = 1, escolharUser;
     struct pagina *cabeca = NULL, *atual = NULL, *final = NULL;
 
@@ -24,7 +26,7 @@ void main() {
         // apresenta as opções do usuário e após isso o usuário escolhe
         printf("Escolha:\n");
         printf("[1] Inserir URL;\n");
-        printf("[2] Remover URL;\n"); // por indice ou por nome
+        printf("[2] Remover URL;\n");
         printf("[3] Exibir o Histórico;\n");
         printf("[4] Exibir o Tamanho do Histórico;\n");
         printf("[5] Avançar;\n");
@@ -32,9 +34,15 @@ void main() {
         printf("[0] Sair;\n");
         scanf("%d", &escolharUser);
 
+        getchar();
+
         switch (escolharUser) {
         case 1:
             inserirUrl(&cabeca, &final, &atual);
+            break;
+        
+        case 2:
+            removerUrl(&cabeca);
             break;
         
         case 4:
@@ -52,9 +60,6 @@ void inserirUrl(struct pagina **cabeca, struct pagina **final, struct pagina **a
     struct pagina *NovaUrl = malloc(sizeof *NovaUrl);
 
     printf("Digite a URL que quer acessar:\n");
-
-    // cancela resíduos que podem ter ficado na entrada
-    getchar();
 
     // lê a URL
     fgets(NovaUrl->url, sizeof(NovaUrl->url), stdin);
@@ -80,6 +85,62 @@ void inserirUrl(struct pagina **cabeca, struct pagina **final, struct pagina **a
         *final = NovaUrl;
         NovaUrl->prox = NULL;
     }
+}
+
+void removerUrl(struct pagina **cabeca) {
+    char urlRemovida[20];
+    struct pagina *ptrI = *cabeca;
+
+    printf("Qual a URL que você gostaria de Apagar?\n");
+
+    fgets(urlRemovida, sizeof(urlRemovida), stdin);
+    urlRemovida[strcspn(urlRemovida, "\n")] = '\0';
+    printf("%s", urlRemovida);
+    
+    while (ptrI != NULL) {
+        // verifica se é a cabeça que tem que ser removida
+        if (strcmp((*cabeca)->url, urlRemovida) == 0) {
+            // salva o que vai ser removido
+            struct pagina *remover = ptrI;
+
+            // a cabeça aponta para a nova cabeça
+            *cabeca = ptrI->prox;
+            // se a cabeça tiver algum valor
+            if (cabeca != NULL) {
+                (*cabeca)->ant = NULL;
+            }
+
+            // libera
+            free(remover);
+            remover = NULL;
+
+            printf("Apagado com sucesso!\n");
+            return;
+        }
+
+        // se a url do próximo for igual a url que vai ser removida
+        if (ptrI->prox != NULL && strcmp(ptrI->prox->url, urlRemovida) == 0  ) {
+            // pega o anterior e o próximo para conecta-los
+            struct pagina *anterior = ptrI, *proximo = ptrI->prox->prox;
+
+            // o antecessor vai começar a apontar para o novo próximo
+            anterior->prox = proximo;
+            if (proximo != NULL) {
+                proximo->ant = anterior;
+            }
+
+            // libera
+            free(ptrI->prox);
+            ptrI->prox = NULL;
+
+            printf("Apagado com sucesso!\n");
+            return;
+        }
+
+        ptrI = ptrI->prox;
+    }
+
+    printf("Não encontrado \n");
 }
 
 int tamanhoLista(struct pagina **cabeca) {
