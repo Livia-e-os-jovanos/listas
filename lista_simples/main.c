@@ -83,6 +83,10 @@ void inserirArquivo(struct no **ptrCabeca) {
     struct no *atual = *ptrCabeca;
     // armazena o espaço do novo arquivo
     struct no *novoArquivo = malloc(sizeof *novoArquivo);
+    if (novoArquivo == NULL) {
+        printf("Erro de alocação");
+        return;
+    }
     novoArquivo->prox = NULL;
 
     // cancela resíduos que podem ter ficado na entrada

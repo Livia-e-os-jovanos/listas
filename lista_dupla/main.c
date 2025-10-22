@@ -69,6 +69,10 @@ int main() {
 
 void inserirUrl(struct pagina **cabeca, struct pagina **final, struct pagina **atual) {
     struct pagina *NovaUrl = malloc(sizeof *NovaUrl);
+    if (NovaUrl == NULL) {
+        printf("Erro de alocação");
+        return;
+    }
 
     printf("Digite a URL que quer acessar:\n");
 
