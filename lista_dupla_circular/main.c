@@ -28,7 +28,7 @@ void findMusicYear (song **head, int year);
 
 int main() {
     song *head = NULL;
-    printf("\033[1;34mSEJA BEM-VINDO(A) NOVAMENTE AO APP DE MÚSICA LÍVIA E OS JOVANNOS\033[0m\n");
+    printf("\033[1;34mSEJA BEM-VINDO(A) NOVAMENTE AO APP DE MÚSICA\033[0m\n");
 
     // músicas padrão
     addToPlaylist(&head, "Vestido de Seda", "Milionário e José Rico", 1984);
@@ -116,8 +116,13 @@ int main() {
 //==============================================
 
 void addToPlaylist(song **head, char *name, char *singer, int releaseYear)
+
 {
     song *new = malloc(sizeof(song));
+    if (new == NULL) {
+        printf("\033[1;31mErro ao alocar memória para a nova música!\033[0m\n");
+        return; 
+    }
 
     strcpy(new->name, name);
     strcpy(new->singer, singer);
@@ -142,6 +147,7 @@ void addToPlaylist(song **head, char *name, char *singer, int releaseYear)
         (*head)->back = new;
     }
 }
+
 void print(song **head)
 {
     song *aux = *head;
@@ -173,11 +179,11 @@ void playMusic(song **head)
     char c;
     int i;
     int duracao = 5; 
-
+    int voltar = 0;
     while(1) //toca as musicas eternamente até que o usuario peça para parar
     {
         printf("\nTocando agora: \033[1;35m%s\033[0m - \033[1m%s\033[0m\n", aux->name, aux->singer);
-        printf("\np = pause | r = retome | s = pular | q = sair\n\n");
+        printf("\np = pause | r = retome | s = pular | b = voltar | q = sair\n\n");
         i = 0;
 
         while(i < duracao) //enquanto a musica não terminar
@@ -210,14 +216,27 @@ void playMusic(song **head)
                     printf("\nA playlist parou de ser reprduzida\n");
                     return; // sai da playlist
                 }
+                else if(c == 'b'){
+                    printf("\nMúsica anterior\n");
+                    voltar = 1;
+                    break;
+                }
             }
-            sleep(1); // espera 1 segundo
-            i++;
+             i++;
+            sleep(1); 
         }
-        system("clear"); //limpa o terminal
-        sleep(0.1);
-        aux = aux->next; // próxima música na lista 
 
+        sleep(0.1);
+        system("clear"); 
+
+        if (voltar == 1)
+        {
+            aux = aux->back; 
+            voltar = 0;
+        }
+
+        else
+            aux = aux->next; 
     }
 }
 
@@ -249,6 +268,26 @@ void findMusicYear (song **head, int year)
         }
         aux = aux->next;
     }while (aux->next != *head);
+}
+void findSong(song **head, char *name)
+{
+    if (*head == NULL) {
+        printf("Playlist vazia.\n");
+        return;
+    }
+
+    song *aux = *head;
+    do {
+        if (strcmp(aux->name, name) == 0) {
+            printf("\033[1;33m\nMúsica encontrada na sua playlist!\033[0m\n");
+            printf("\033[1;35m%s\033[0m - %s (%d)\n",
+                   aux->name, aux->singer, aux->releaseYear);
+            return;
+        }
+        aux = aux->next;
+    } while (aux != *head);
+
+    printf("\033[1;31mMúsica não encontrada!\033[0m\n");
 }
 
 void deleteMusic(song **head, char *nameDelete)
@@ -288,26 +327,7 @@ void deleteMusic(song **head, char *nameDelete)
     printf("Não foi encontrada música com esse título");
  
 }
-void findSong(song **head, char *name)
-{
-    if (*head == NULL) {
-        printf("Playlist vazia.\n");
-        return;
-    }
 
-    song *aux = *head;
-    do {
-        if (strcmp(aux->name, name) == 0) {
-            printf("\033[1;33m\nMúsica encontrada na sua playlist!\033[0m\n");
-            printf("\033[1;35m%s\033[0m - %s (%d)\n",
-                   aux->name, aux->singer, aux->releaseYear);
-            return;
-        }
-        aux = aux->next;
-    } while (aux != *head);
-
-    printf("\033[1;31mMúsica não encontrada!\033[0m\n");
-}
 int kbhit(void) {
     struct termios oldt /* armazena as configurações atuais do terminal para restaurar depois*/, newt /*configuração quue vai ser mudada*/;
     int ch; //caracter lido
