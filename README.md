@@ -56,9 +56,9 @@ Apresentar um relatório técnico contendo:
 Demonstrar o funcionamento de cada programa, com:
 
 - Inserção  
-- Remoção  
+- Remoção     
 - Exibição  
 - Casos de borda  
 
 ---
-
+Link do relatório técnico: https://docs.google.com/document/d/15T6i_MCgGqYsdGH-WOpGSF3jcWRHECQQQoGSdDVKo2w/edit?usp=sharing
