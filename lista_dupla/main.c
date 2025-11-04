@@ -147,17 +147,19 @@ void removerUrl(struct pagina **cabeca, struct pagina **final, struct pagina **a
         }
 
         // se a url do próximo for igual a url que vai ser removida
-        if (ptrI->prox != NULL && strcmp(ptrI->prox->url, urlRemovida) == 0  ) {
+        if (ptrI->prox != NULL && strcmp(ptrI->prox->url, urlRemovida) == 0) {
             // pega o anterior e o próximo para conecta-los
-            struct pagina *anterior = ptrI, *proximo = ptrI->prox->prox;
+            struct pagina *anterior = ptrI;
+            struct pagina *remover = ptrI->prox;
+            struct pagina *proximo = remover->prox;
 
             // se a atual for a que vai ser removida
-            if (*atual == ptrI->prox) {
+            if (*atual == remover) { 
                 *atual = anterior;
             }
 
             // se o final for a que vai ser removida
-            if (*final == ptrI->prox) {
+            if (*final == remover) { 
                 *final = anterior;
             } 
 
@@ -168,16 +170,15 @@ void removerUrl(struct pagina **cabeca, struct pagina **final, struct pagina **a
             }
 
             // libera
-            free(ptrI->prox);
-            ptrI->prox = NULL;
+            free(remover);
+            remover = NULL;
 
             printf("Apagado com sucesso!\n");
             return;
         }
 
-        ptrI = ptrI->prox;
+         ptrI = ptrI->prox;
     }
-
     printf("Não encontrado \n");
 }
 
